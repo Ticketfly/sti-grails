@@ -1,4 +1,3 @@
-
 #!/bin/bash -e
 #
 # S2I run script for the 'grails' image.
@@ -8,4 +7,13 @@
 #	https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md
 #
 
-exec <start your server here>
+JAR_COUNT=$(find build/libs -type f -name "*.jar" | wc -l)
+
+if [ "$JAR_COUNT" -eq "1" ]
+then
+  JAR=$(find build/libs -type f -name "*.jar")
+  exec java -Dgrails.env=prod -jar $JAR
+else
+  echo "Found $JAR_COUNT jars instead of one. Exiting."
+  exit 1
+fi

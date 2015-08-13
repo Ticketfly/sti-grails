@@ -1,4 +1,3 @@
-
 #!/bin/bash -e
 cat <<EOF
 This is the grails S2I image:

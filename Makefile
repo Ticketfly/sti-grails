@@ -1,5 +1,5 @@
 
-IMAGE_NAME = grails
+IMAGE_NAME = grails-java8-centos7
 
 build:
 	docker build -t $(IMAGE_NAME) .
