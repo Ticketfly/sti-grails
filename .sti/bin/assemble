@@ -27,6 +27,7 @@ echo "---> Building application from source"
 if [ -f 'gradlew' ];
 then
    ./gradlew build
+	 chmod -R g+rw .
 else
 	echo "No grails wrapper found"
   exit 1
