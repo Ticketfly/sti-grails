@@ -10,7 +10,7 @@ LABEL io.k8s.description="Platform for grails apps" \
 
 RUN yum install -y java-1.8.0-openjdk && yum clean all -y
 
-COPY ./.sti/bin/ /usr/local/sti
+COPY ./.s2i/bin/ /usr/libexec/s2i
 
 RUN mkdir /opt/openshift; chown -R 1001:1001 /opt/openshift
 
