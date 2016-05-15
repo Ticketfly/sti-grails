@@ -24,7 +24,7 @@ echo "---> Installing application source"
 cp -Rf /tmp/src/. ./
 
 echo "---> Building application from source"
-if [-f ‘grailsw’ ];
+if [ -f ‘grailsw’ ];
 then
     ./grailsw package
     chmod -R g+rw .
