@@ -1,0 +1,26 @@
+#!/bin/bash -e
+#
+# S2I develop script for the 'grails' image.
+# The 'develop' script runs your application in development mode.
+#
+# For more information refer to the documentation:
+#	https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md
+#
+
+if [ "$1" = "-h" ]; then
+	# If the 'grails' develop script is executed with '-h' flag,
+	# print the usage.
+	exec /usr/local/sti/usage
+fi
+
+echo "---> Running application in development mode"
+if [ -f 'grailsw' ];
+then
+    ./grailsw run-app
+elif [ -f 'gradlew' ];
+then
+    ./gradlew run-app
+else
+    echo "No grails wrapper found in ${PWD}"
+    exit 1
+fi

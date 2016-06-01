@@ -1,5 +1,5 @@
 
-IMAGE_NAME = grails-java8-centos7
+IMAGE_NAME = ticketfly/grails
 
 build:
 	docker build -t $(IMAGE_NAME) .
