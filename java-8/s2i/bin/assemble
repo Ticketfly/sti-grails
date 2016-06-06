@@ -1,0 +1,38 @@
+#!/bin/bash -e
+#
+# S2I assemble script for the 'grails' image.
+# The 'assemble' script builds your application source ready to run.
+#
+# For more information refer to the documentation:
+#	https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md
+#
+
+if [ "$1" = "-h" ]; then
+    # If the 'grails' assemble script is executed with '-h' flag,
+    # print the usage.
+    exec /usr/local/sti/usage
+fi
+
+# Restore artifacts from the previous build (if they exist).
+#
+if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
+    echo "---> Restoring build artifacts"
+    cp -r /tmp/artifacts/. ./
+fi
+
+echo "---> Installing application source"
+cp -Rf /tmp/src/. ./
+
+echo "---> Building application from source"
+if [ -f ‘grailsw’ ];
+then
+    ./grailsw package
+    chmod -R g+rw .
+elif [ -f 'gradlew' ];
+then
+    ./gradlew build
+    chmod -R g+rw .
+else
+    echo "No grails wrapper found"
+    exit 1
+fi

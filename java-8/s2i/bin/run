@@ -1,0 +1,39 @@
+#!/bin/bash -e
+#
+# S2I run script for the 'grails' image.
+# The run script executes the server that runs your application.
+#
+# For more information see the documentation:
+#	https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md
+#
+
+
+# Set the environment to production by default.
+if [ -z "$DEV_MODE" ]; then
+  export DEV_MODE=false
+fi
+
+if [ "$DEV_MODE" == true ]; then
+  echo "---> Running application in development mode"
+  if [ -f 'grailsw' ];
+  then
+      ./grailsw --stacktrace --verbose -Djava.awt.headless=true -Dgrails.server.port=8080 run-app --non-interactive
+  elif [ -f 'gradlew' ];
+  then
+      ./gradlew --stacktrace --verbose -Djava.awt.headless=true -Dgrails.server.port=8080 run-app --non-interactive
+  else
+      echo "No grails wrapper found in ${PWD}"
+      exit 1
+  fi
+else
+  JAR_COUNT=$(find build/libs -type f -name "*.jar" | wc -l)
+
+  if [ "$JAR_COUNT" -eq "1" ]
+  then
+    JAR=$(find build/libs -type f -name "*.jar")
+    exec java -Dgrails.env=prod -jar $JAR
+  else
+    echo "Found $JAR_COUNT jars instead of one. Exiting."
+    exit 1
+  fi
+fi
